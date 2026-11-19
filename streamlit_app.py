@@ -30,7 +30,6 @@ st.markdown("""
         linear-gradient(135deg, #eaf8fb, #d9f0f3);
 }
 
-/* AREA APLIKASI */
 .block-container {
     max-width: 700px;
     padding-top: 2rem;
@@ -44,17 +43,24 @@ st.markdown("""
 }
 
 .stApp h2,
-.stApp h3 {
-    color: #173b45 !important;
-}
-
-/* TEKS FORMULIR */
+.stApp h3,
 .stApp label,
 .stApp [data-testid="stWidgetLabel"] p {
     color: #173b45 !important;
 }
 
-/* KOTAK INPUT */
+/* KOTAK LAYANAN */
+[data-testid="stAlert"] {
+    background-color: #fff8df !important;
+    border: 2px solid #e5c66b !important;
+    border-radius: 16px;
+}
+
+[data-testid="stAlert"] * {
+    color: #263b46 !important;
+}
+
+/* INPUT */
 .stTextInput input {
     background-color: #ffffff !important;
     color: #173b45 !important;
@@ -78,7 +84,7 @@ st.markdown("""
     color: #ffffff !important;
 }
 
-/* HASIL PERHITUNGAN */
+/* HASIL */
 .stSuccess {
     border-radius: 12px;
 }
@@ -89,35 +95,33 @@ st.markdown("""
 # HEADER
 st.title("🧺 Deskap Laundry Aseli")
 
+
 # LAYANAN KAMI
+st.info("""
+✨ **Layanan Kami:**
+
+* Terima cuci baju biar **wangy**
+* Cuci muka biar **segar**
+* Cuci otak biar **sadar**
+* Cuci dosa? *Next time kita kasih paham* 😹
+""")
+
+# SLOGAN
 st.markdown("""
 <div style="
-    background-color: #fff8df;
-    border: 2px solid #e5c66b;
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 15px;
-    color: #263b46;
+    background-color: #ffffff;
+    color: #126477;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border: 2px solid #8bcbd0;
+    border-radius: 12px;
+    margin-bottom: 20px;
 ">
-    <h3 style="color:#174b58; margin-top:0;">
-        ✨ Layanan Kami:
-    </h3>
-    <p style="color:#263b46;">
-        🧺 Terima cuci baju biar <b>wangi</b>
-    </p>
-    <p style="color:#263b46;">
-        🫧 Cuci muka biar <b>segar</b>
-    </p>
-    <p style="color:#263b46;">
-        🧠 Cuci otak biar <b>sadar</b>
-    </p>
-    <p style="color:#263b46;">
-        😹 Cuci dosa? <i>Next time kita kasih paham</i>
-    </p>
+    🫧 Fresh Laundry, Fresh Day! 🧺
 </div>
 """, unsafe_allow_html=True)
-
-st.caption("🫧 Fresh Laundry, Fresh Day, Fresh Brain!")
 
 
 # FORMULIR
@@ -145,34 +149,32 @@ with col2:
 # PROSES PERHITUNGAN
 if hitung:
 
-    # VALIDASI NIM
     if len(nim) != 10 or not nim.isdigit():
         st.error("NIM harus terdiri dari tepat 10 digit angka.")
 
-    # VALIDASI BERAT
     elif not berat.isdigit() or int(berat) <= 0:
         st.error("Berat cucian harus berupa bilangan bulat positif.")
 
     else:
         berat_kg = int(berat)
 
-        # MENGHITUNG TARIF
+        # TARIF PER KG
         tarif = 5000 + (int(nim[-1]) * 500)
 
-        # MENGHITUNG DIGIT GENAP
+        # JUMLAH DIGIT GENAP
         digit_genap = sum(
             int(angka) % 2 == 0 for angka in nim
         )
 
-        # MENGHITUNG DISKON
+        # DISKON
         persen_diskon = digit_genap * 1
 
-        # MENGHITUNG BIAYA
+        # PERHITUNGAN BIAYA
         biaya_normal = berat_kg * tarif
         potongan = biaya_normal * persen_diskon / 100
         total_bayar = biaya_normal - potongan
 
-        # RINCIAN PERHITUNGAN
+        # HASIL PERHITUNGAN
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
@@ -201,11 +203,12 @@ st.divider()
 st.markdown("""
 <div style="
     text-align:center;
-    color:#173b45;
+    color:#126477;
+    font-weight:bold;
     padding:15px;
     font-size:14px;
 ">
-    🫧 <b>Deskap Laundry Aseli</b><br>
-    Terima kasih sudah mempercayakan cucianmu kepada kami!
+    🫧 Deskap Laundry Aseli 🧺<br>
+    Terima kasih sudah mempercayakan cucianmu!
 </div>
 """, unsafe_allow_html=True)
