@@ -36,7 +36,6 @@ st.markdown("""
     padding-bottom: 3rem;
 }
 
-/* JUDUL */
 .stApp h1 {
     color: #126477 !important;
     font-weight: 800;
@@ -49,7 +48,6 @@ st.markdown("""
     color: #173b45 !important;
 }
 
-/* INPUT */
 .stTextInput input {
     background-color: #ffffff !important;
     color: #173b45 !important;
@@ -58,7 +56,6 @@ st.markdown("""
     min-height: 45px;
 }
 
-/* TOMBOL */
 .stButton button {
     background-color: #168b91 !important;
     color: #ffffff !important;
@@ -73,7 +70,6 @@ st.markdown("""
     color: #ffffff !important;
 }
 
-/* HASIL */
 .stSuccess {
     border-radius: 12px;
 }
@@ -81,41 +77,18 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# HEADER
+# JUDUL
 st.title("🧺 Deskap Laundry Aseli")
 
 
 # LAYANAN KAMI
 st.markdown("""
-<div style="
-    background-color: #fff8df;
-    border: 2px solid #e5c66b;
-    border-radius: 16px;
-    padding: 18px;
-    margin-bottom: 20px;
-    color: #263b46 !important;
-">
-
-    <h3 style="color: #174b58 !important;">
-        ✨ Layanan Kami:
-    </h3>
-
-    <p style="color: #263b46 !important;">
-        🧺 Terima cuci baju biar <b>wangy</b>
-    </p>
-
-    <p style="color: #263b46 !important;">
-        🫧 Cuci muka biar <b>segar</b>
-    </p>
-
-    <p style="color: #263b46 !important;">
-        🧠 Cuci otak biar <b>sadar</b>
-    </p>
-
-    <p style="color: #263b46 !important;">
-        😹 Cuci dosa? <i>Next time kita kasih paham</i>
-    </p>
-
+<div style="background-color:#fff8df; border:2px solid #e5c66b; border-radius:16px; padding:20px; margin-bottom:20px;">
+<h3 style="color:#174b58 !important;">✨ Layanan Kami:</h3>
+<p style="color:#263b46 !important;">🧺 Terima cuci baju biar <b>wangy</b></p>
+<p style="color:#263b46 !important;">🫧 Cuci muka biar <b>segar</b></p>
+<p style="color:#263b46 !important;">🧠 Cuci otak biar <b>sadar</b></p>
+<p style="color:#263b46 !important;">😹 Cuci dosa? <i>Next time kita kasih paham</i></p>
 </div>
 """, unsafe_allow_html=True)
 
@@ -129,10 +102,7 @@ berat = st.text_input("Berat Cucian (kg)", key="berat")
 col1, col2 = st.columns(2)
 
 with col1:
-    hitung = st.button(
-        "🧮 Hitung",
-        use_container_width=True
-    )
+    hitung = st.button("🧮 Hitung", use_container_width=True)
 
 with col2:
     st.button(
@@ -142,37 +112,30 @@ with col2:
     )
 
 
-# PROSES PERHITUNGAN
+# PERHITUNGAN
 if hitung:
 
-    # VALIDASI NIM
     if len(nim) != 10 or not nim.isdigit():
         st.error("NIM harus terdiri dari tepat 10 digit angka.")
 
-    # VALIDASI BERAT
     elif not berat.isdigit() or int(berat) <= 0:
         st.error("Berat cucian harus berupa bilangan bulat positif.")
 
     else:
         berat_kg = int(berat)
 
-        # TARIF PER KG
         tarif = 5000 + (int(nim[-1]) * 500)
 
-        # MENGHITUNG DIGIT GENAP
         digit_genap = sum(
             int(angka) % 2 == 0 for angka in nim
         )
 
-        # DISKON
         persen_diskon = digit_genap * 1
 
-        # PERHITUNGAN BIAYA
         biaya_normal = berat_kg * tarif
         potongan = biaya_normal * persen_diskon / 100
         total_bayar = biaya_normal - potongan
 
-        # HASIL PERHITUNGAN
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
@@ -197,14 +160,8 @@ if hitung:
 
 # FOOTER
 st.divider()
-
 st.markdown("""
-<div style="
-    text-align:center;
-    color:#126477;
-    font-weight:bold;
-    padding:15px;
-">
-    🧺 Deskap Laundry Aseli
+<div style="text-align:center; color:#126477; font-weight:bold; padding:15px;">
+🧺 Deskap Laundry Aseli
 </div>
 """, unsafe_allow_html=True)
