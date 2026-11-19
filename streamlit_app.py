@@ -7,6 +7,7 @@ st.set_page_config(
     layout="centered"
 )
 
+# RESET FORM
 def reset_form():
     st.session_state.nim = ""
     st.session_state.berat = ""
@@ -17,15 +18,17 @@ if "nim" not in st.session_state:
 if "berat" not in st.session_state:
     st.session_state.berat = ""
 
+
 # DESAIN TAMPILAN
 st.markdown("""
 <style>
 .stApp {
     background:
         radial-gradient(circle at 10% 15%, #ffffff 0 7px, transparent 8px),
-        radial-gradient(circle at 90% 30%, #c8f0f2 0 11px, transparent 12px),
+        radial-gradient(circle at 90% 30%, #bcebef 0 11px, transparent 12px),
         radial-gradient(circle at 20% 85%, #ffffff 0 9px, transparent 10px),
         linear-gradient(135deg, #eaf8fb, #d9f0f3);
+    color: #173b45;
 }
 
 .block-container {
@@ -34,60 +37,81 @@ st.markdown("""
     padding-bottom: 3rem;
 }
 
-.hero {
-    background: linear-gradient(135deg, #126477, #20a6a2);
-    padding: 28px 22px;
-    border-radius: 22px;
-    color: white;
-    text-align: center;
-    box-shadow: 0 8px 20px #12647730;
-    margin-bottom: 25px;
+/* JUDUL */
+.stApp h1 {
+    color: #126477 !important;
+    font-weight: 800;
 }
 
-.hero h1 {
-    color: white;
-    font-size: 30px;
-    margin-bottom: 8px;
+.stApp h2,
+.stApp h3,
+.stApp label,
+.stApp [data-testid="stWidgetLabel"] p,
+.stApp .stMarkdown p {
+    color: #173b45 !important;
 }
 
-.hero p {
-    color: #e3ffff;
-    margin: 0;
+/* KOTAK LAYANAN */
+[data-testid="stAlert"] {
+    background: linear-gradient(135deg, #d0f1f3, #b5e5e9);
+    border: 1px solid #168b91;
+    border-radius: 16px;
 }
 
+[data-testid="stAlert"] p,
+[data-testid="stAlert"] li,
+[data-testid="stAlert"] strong {
+    color: #124b58 !important;
+}
+
+/* INPUT */
 .stTextInput input {
+    background-color: #ffffff !important;
+    color: #173b45 !important;
+    border: 2px solid #8bcbd0 !important;
     border-radius: 12px;
-    background-color: white;
-    border: 1px solid #9bcfd2;
+    min-height: 45px;
 }
 
+/* TOMBOL */
 .stButton button {
+    background-color: #168b91;
+    color: #ffffff !important;
     border-radius: 12px;
     min-height: 48px;
     font-weight: bold;
-    border: 1px solid #168b91;
+    border: none;
 }
 
 .stButton button:hover {
-    border-color: #126477;
-    color: #126477;
+    background-color: #126477;
+    color: #ffffff !important;
 }
 
-h2, h3 {
-    color: #126477;
+/* HASIL */
+.stSuccess {
+    border-radius: 12px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# HEADER
-st.markdown("""
-<div class="hero">
-    <h1>🧺 Deskap Laundry Aseli</h1>
-    <p>✨ Bersih, Wangi, dan Praktis ✨</p>
-    <p>Solusi Perhitungan Laundry Kiloan</p>
-</div>
-""", unsafe_allow_html=True)
 
+# HEADER DAN LAYANAN
+st.title("🧺 Deskap Laundry Aseli")
+
+st.info("""
+✨ **Layanan Kami:**
+
+* Terima cuci baju biar **wangy**
+* Cuci muka biar **segar**
+* Cuci otak biar **sadar**
+* Cuci dosa? *Next time kita kasih paham* 😹
+""")
+
+st.caption("🫧 Fresh Laundry, Fresh Day!")
+
+
+# FORMULIR
 st.subheader("🫧 Formulir Laundry")
 
 nim = st.text_input("NIM (10 digit)", key="nim")
@@ -96,7 +120,10 @@ berat = st.text_input("Berat Cucian (kg)", key="berat")
 col1, col2 = st.columns(2)
 
 with col1:
-    hitung = st.button("🧮 Hitung", use_container_width=True)
+    hitung = st.button(
+        "🧮 Hitung",
+        use_container_width=True
+    )
 
 with col2:
     st.button(
@@ -105,40 +132,65 @@ with col2:
         on_click=reset_form
     )
 
+
+# PROSES PERHITUNGAN
 if hitung:
+
+    # VALIDASI NIM
     if len(nim) != 10 or not nim.isdigit():
         st.error("NIM harus terdiri dari tepat 10 digit angka.")
 
+    # VALIDASI BERAT
     elif not berat.isdigit() or int(berat) <= 0:
         st.error("Berat cucian harus berupa bilangan bulat positif.")
 
     else:
         berat_kg = int(berat)
+
+        # MENGHITUNG TARIF
         tarif = 5000 + (int(nim[-1]) * 500)
 
+        # MENGHITUNG DIGIT GENAP
         digit_genap = sum(
             int(angka) % 2 == 0 for angka in nim
         )
 
+        # MENGHITUNG DISKON
         persen_diskon = digit_genap * 1
+
+        # MENGHITUNG BIAYA
         biaya_normal = berat_kg * tarif
         potongan = biaya_normal * persen_diskon / 100
         total_bayar = biaya_normal - potongan
 
+        # MENAMPILKAN HASIL
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
         st.write(f"**NIM:** {nim}")
         st.write(f"**Berat cucian:** {berat_kg} kg")
-        st.write(f"**Tarif per kg:** Rp {tarif:,.0f}".replace(",", "."))
+        st.write(
+            f"**Tarif per kg:** Rp {tarif:,.0f}".replace(",", ".")
+        )
         st.write(f"**Jumlah digit genap:** {digit_genap}")
         st.write(f"**Persen diskon:** {persen_diskon}%")
-        st.write(f"**Biaya normal:** Rp {biaya_normal:,.0f}".replace(",", "."))
-        st.write(f"**Potongan:** Rp {potongan:,.0f}".replace(",", "."))
+        st.write(
+            f"**Biaya normal:** Rp {biaya_normal:,.0f}".replace(",", ".")
+        )
+        st.write(
+            f"**Potongan:** Rp {potongan:,.0f}".replace(",", ".")
+        )
 
         st.success(
             f"🧺 Total Bayar: Rp {total_bayar:,.0f}".replace(",", ".")
         )
 
+
+# FOOTER
 st.divider()
-st.caption("🫧 Deskap Laundry Aseli | Fresh Laundry, Fresh Day!")
+st.markdown("""
+<div style="text-align:center; color:#173b45; padding:15px;">
+    🫧 <b>Deskap Laundry Aseli</b><br>
+    Terima kasih sudah mempercayakan cucianmu kepada kami!
+</div>
+""", unsafe_allow_html=True)
