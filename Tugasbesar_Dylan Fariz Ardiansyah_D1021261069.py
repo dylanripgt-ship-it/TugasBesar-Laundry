@@ -2,7 +2,7 @@
 import streamlit as st
 
 st.set_page_config(
-    page_title="Laundry Kiloan",
+    page_title="Deskap Laundry Aseli",
     page_icon="🧺",
     layout="centered"
 )
@@ -17,19 +17,19 @@ if "nim" not in st.session_state:
 if "berat" not in st.session_state:
     st.session_state.berat = ""
 
-st.title("🧺 Laundry Kiloan")
+st.title("🧺 Deskap Laundry Aseli")
 st.write("Aplikasi Perhitungan Biaya Laundry")
 st.divider()
 
 nim = st.text_input("NIM (10 digit)", key="nim")
 berat = st.text_input("Berat Cucian (kg)", key="berat")
 
-kolom1, kolom2 = st.columns(2)
+col1, col2 = st.columns(2)
 
-with kolom1:
+with col1:
     hitung = st.button("🧮 Hitung", use_container_width=True)
 
-with kolom2:
+with col2:
     st.button(
         "🔄 Reset",
         use_container_width=True,
@@ -45,7 +45,6 @@ if hitung:
 
     else:
         berat_kg = int(berat)
-
         tarif = 5000 + (int(nim[-1]) * 500)
 
         digit_genap = sum(
@@ -53,7 +52,6 @@ if hitung:
         )
 
         persen_diskon = digit_genap * 1
-
         biaya_normal = berat_kg * tarif
         potongan = biaya_normal * persen_diskon / 100
         total_bayar = biaya_normal - potongan
@@ -61,6 +59,8 @@ if hitung:
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
+        st.write(f"**NIM:** {nim}")
+        st.write(f"**Berat cucian:** {berat_kg} kg")
         st.write(f"**Tarif per kg:** Rp {tarif:,.0f}".replace(",", "."))
         st.write(f"**Jumlah digit genap:** {digit_genap}")
         st.write(f"**Persen diskon:** {persen_diskon}%")
