@@ -28,9 +28,9 @@ st.markdown("""
         radial-gradient(circle at 90% 30%, #bcebef 0 11px, transparent 12px),
         radial-gradient(circle at 20% 85%, #ffffff 0 9px, transparent 10px),
         linear-gradient(135deg, #eaf8fb, #d9f0f3);
-    color: #173b45;
 }
 
+/* AREA APLIKASI */
 .block-container {
     max-width: 700px;
     padding-top: 2rem;
@@ -44,27 +44,17 @@ st.markdown("""
 }
 
 .stApp h2,
-.stApp h3,
-.stApp label,
-.stApp [data-testid="stWidgetLabel"] p,
-.stApp .stMarkdown p {
+.stApp h3 {
     color: #173b45 !important;
 }
 
-/* KOTAK LAYANAN */
-[data-testid="stAlert"] {
-    background: linear-gradient(135deg, #d0f1f3, #b5e5e9);
-    border: 1px solid #168b91;
-    border-radius: 16px;
+/* TEKS FORMULIR */
+.stApp label,
+.stApp [data-testid="stWidgetLabel"] p {
+    color: #173b45 !important;
 }
 
-[data-testid="stAlert"] p,
-[data-testid="stAlert"] li,
-[data-testid="stAlert"] strong {
-    color: #124b58 !important;
-}
-
-/* INPUT */
+/* KOTAK INPUT */
 .stTextInput input {
     background-color: #ffffff !important;
     color: #173b45 !important;
@@ -75,7 +65,7 @@ st.markdown("""
 
 /* TOMBOL */
 .stButton button {
-    background-color: #168b91;
+    background-color: #168b91 !important;
     color: #ffffff !important;
     border-radius: 12px;
     min-height: 48px;
@@ -84,11 +74,11 @@ st.markdown("""
 }
 
 .stButton button:hover {
-    background-color: #126477;
+    background-color: #126477 !important;
     color: #ffffff !important;
 }
 
-/* HASIL */
+/* HASIL PERHITUNGAN */
 .stSuccess {
     border-radius: 12px;
 }
@@ -96,19 +86,38 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
-# HEADER DAN LAYANAN
+# HEADER
 st.title("🧺 Deskap Laundry Aseli")
 
-st.info("""
-✨ **Layanan Kami:**
+# LAYANAN KAMI
+st.markdown("""
+<div style="
+    background-color: #fff8df;
+    border: 2px solid #e5c66b;
+    border-radius: 16px;
+    padding: 18px;
+    margin-bottom: 15px;
+    color: #263b46;
+">
+    <h3 style="color:#174b58; margin-top:0;">
+        ✨ Layanan Kami:
+    </h3>
+    <p style="color:#263b46;">
+        🧺 Terima cuci baju biar <b>wangi</b>
+    </p>
+    <p style="color:#263b46;">
+        🫧 Cuci muka biar <b>segar</b>
+    </p>
+    <p style="color:#263b46;">
+        🧠 Cuci otak biar <b>sadar</b>
+    </p>
+    <p style="color:#263b46;">
+        😹 Cuci dosa? <i>Next time kita kasih paham</i>
+    </p>
+</div>
+""", unsafe_allow_html=True)
 
-* Terima cuci baju biar **wangy**
-* Cuci muka biar **segar**
-* Cuci otak biar **sadar**
-* Cuci dosa? *Next time kita kasih paham* 😹
-""")
-
-st.caption("🫧 Fresh Laundry, Fresh Day!")
+st.caption("🫧 Fresh Laundry, Fresh Day, Fresh Brain!")
 
 
 # FORMULIR
@@ -163,7 +172,7 @@ if hitung:
         potongan = biaya_normal * persen_diskon / 100
         total_bayar = biaya_normal - potongan
 
-        # MENAMPILKAN HASIL
+        # RINCIAN PERHITUNGAN
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
@@ -188,8 +197,14 @@ if hitung:
 
 # FOOTER
 st.divider()
+
 st.markdown("""
-<div style="text-align:center; color:#173b45; padding:15px;">
+<div style="
+    text-align:center;
+    color:#173b45;
+    padding:15px;
+    font-size:14px;
+">
     🫧 <b>Deskap Laundry Aseli</b><br>
     Terima kasih sudah mempercayakan cucianmu kepada kami!
 </div>
