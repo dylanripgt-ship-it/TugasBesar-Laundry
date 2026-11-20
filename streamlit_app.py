@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 st.set_page_config(
@@ -7,10 +6,12 @@ st.set_page_config(
     layout="centered"
 )
 
+
 # RESET FORM
 def reset_form():
     st.session_state.nim = ""
     st.session_state.berat = ""
+
 
 if "nim" not in st.session_state:
     st.session_state.nim = ""
@@ -44,8 +45,20 @@ st.markdown("""
 .stApp h2,
 .stApp h3,
 .stApp label,
+.stApp p,
+.stApp li,
 .stApp [data-testid="stWidgetLabel"] p {
     color: #173b45 !important;
+}
+
+.layanan {
+    background-color: #fff8df;
+    border: 2px solid #e5c66b;
+    border-radius: 16px;
+    padding: 14px 18px;
+    color: #263b46;
+    line-height: 1.8;
+    margin-bottom: 16px;
 }
 
 .stTextInput input {
@@ -58,37 +71,52 @@ st.markdown("""
 
 .stButton button {
     background-color: #168b91 !important;
-    color: #ffffff !important;
     border-radius: 12px;
     min-height: 48px;
     font-weight: bold;
     border: none;
 }
 
-.stButton button:hover {
-    background-color: #126477 !important;
+.stButton button p,
+.stButton button span {
     color: #ffffff !important;
 }
 
-.stSuccess {
-    border-radius: 12px;
+.stButton button:hover {
+    background-color: #126477 !important;
 }
 </style>
 """, unsafe_allow_html=True)
 
 
-# JUDUL
+# HEADER
 st.title("🧺 Deskap Laundry Aseli")
 
 
 # LAYANAN KAMI
 st.markdown("""
-<div style="background-color:#fff8df; border:2px solid #e5c66b; border-radius:16px; padding:20px; margin-bottom:20px;">
-<h3 style="color:#174b58 !important;">✨ Layanan Kami:</h3>
-<p style="color:#263b46 !important;">🧺 Terima cuci baju biar <b>wangy</b></p>
-<p style="color:#263b46 !important;">🫧 Cuci muka biar <b>segar</b></p>
-<p style="color:#263b46 !important;">🧠 Cuci otak biar <b>sadar</b></p>
-<p style="color:#263b46 !important;">😹 Cuci dosa? <i>Next time kita kasih paham</i></p>
+<div class="layanan">
+✨ <b>Layanan Kami:</b><br>
+• Terima cuci baju biar <b>wangy</b><br>
+• Cuci muka biar <b>segar</b><br>
+• Cuci otak biar <b>sadar</b>
+</div>
+""", unsafe_allow_html=True)
+
+# SLOGAN
+st.markdown("""
+<div style="
+    background-color: #ffffff;
+    color: #126477;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    padding: 12px;
+    border: 2px solid #8bcbd0;
+    border-radius: 12px;
+    margin-bottom: 20px;
+">
+    🫧 Fresh Laundry, Fresh Day! 🧺
 </div>
 """, unsafe_allow_html=True)
 
@@ -105,63 +133,61 @@ with col1:
     hitung = st.button("🧮 Hitung", use_container_width=True)
 
 with col2:
-    st.button(
-        "🔄 Reset",
-        use_container_width=True,
-        on_click=reset_form
-    )
+    st.button("🔄 Reset", use_container_width=True, on_click=reset_form)
 
 
-# PERHITUNGAN
+def rupiah(angka):
+    return f"Rp {angka:,.0f}".replace(",", ".")
+
+
+# PROSES PERHITUNGAN
 if hitung:
+    nim_v = nim.strip()
+    berat_v = berat.strip()
 
-    if len(nim) != 10 or not nim.isdigit():
+    if len(nim_v) != 10 or not nim_v.isdecimal():
         st.error("NIM harus terdiri dari tepat 10 digit angka.")
 
-    elif not berat.isdigit() or int(berat) <= 0:
+    elif not berat_v.isdecimal() or int(berat_v) <= 0:
         st.error("Berat cucian harus berupa bilangan bulat positif.")
 
     else:
-        berat_kg = int(berat)
+        berat_kg = int(berat_v)
 
-        tarif = 5000 + (int(nim[-1]) * 500)
-
-        digit_genap = sum(
-            int(angka) % 2 == 0 for angka in nim
-        )
-
+        tarif = 5000 + int(nim_v[-1]) * 500
+        digit_genap = sum(int(d) % 2 == 0 for d in nim_v)
         persen_diskon = digit_genap * 1
 
         biaya_normal = berat_kg * tarif
-        potongan = biaya_normal * persen_diskon / 100
+        potongan = biaya_normal * persen_diskon // 100
         total_bayar = biaya_normal - potongan
 
         st.divider()
         st.subheader("📋 Rincian Perhitungan")
 
-        st.write(f"**NIM:** {nim}")
+        st.write(f"**NIM:** {nim_v}")
         st.write(f"**Berat cucian:** {berat_kg} kg")
-        st.write(
-            f"**Tarif per kg:** Rp {tarif:,.0f}".replace(",", ".")
-        )
+        st.write(f"**Tarif per kg:** {rupiah(tarif)}")
         st.write(f"**Jumlah digit genap:** {digit_genap}")
         st.write(f"**Persen diskon:** {persen_diskon}%")
-        st.write(
-            f"**Biaya normal:** Rp {biaya_normal:,.0f}".replace(",", ".")
-        )
-        st.write(
-            f"**Potongan:** Rp {potongan:,.0f}".replace(",", ".")
-        )
+        st.write(f"**Biaya normal:** {rupiah(biaya_normal)}")
+        st.write(f"**Potongan:** {rupiah(potongan)}")
 
-        st.success(
-            f"🧺 Total Bayar: Rp {total_bayar:,.0f}".replace(",", ".")
-        )
+        st.success(f"🧺 Total Bayar: {rupiah(total_bayar)}")
 
 
 # FOOTER
 st.divider()
+
 st.markdown("""
-<div style="text-align:center; color:#126477; font-weight:bold; padding:15px;">
-🧺 Deskap Laundry Aseli
+<div style="
+    text-align:center;
+    color:#126477;
+    font-weight:bold;
+    padding:15px;
+    font-size:14px;
+">
+    🫧 Deskap Laundry Aseli 🧺<br>
+    Terima kasih sudah mempercayakan cucianmu!
 </div>
 """, unsafe_allow_html=True)
