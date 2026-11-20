@@ -1,3 +1,5 @@
+import random
+
 import streamlit as st
 
 st.set_page_config(
@@ -11,6 +13,7 @@ st.set_page_config(
 def reset_form():
     st.session_state.nim = ""
     st.session_state.berat = ""
+    st.toast("Form dikosongkan 🫧")
 
 
 if "nim" not in st.session_state:
@@ -20,38 +23,85 @@ if "berat" not in st.session_state:
     st.session_state.berat = ""
 
 
-# DESAIN TAMPILAN
-st.markdown("""
-<style>
-.stApp {
-    background:
-        radial-gradient(circle at 10% 15%, #ffffff 0 7px, transparent 8px),
-        radial-gradient(circle at 90% 30%, #bcebef 0 11px, transparent 12px),
-        radial-gradient(circle at 20% 85%, #ffffff 0 9px, transparent 10px),
-        linear-gradient(135deg, #eaf8fb, #d9f0f3);
-}
+# GELEMBUNG ACAK
+random.seed(7)
+ukuran = [random.randint(8, 28) for _ in range(18)]
+gelembung = "".join(
+    f'<span style="left:{random.randint(2, 96)}%;'
+    f'width:{u}px;height:{u}px;'
+    f'animation-duration:{random.randint(8, 16)}s;'
+    f'animation-delay:{random.uniform(0, 10):.1f}s;"></span>'
+    for u in ukuran
+)
 
-.block-container {
+
+# DESAIN TAMPILAN + ANIMASI
+st.markdown(f"""
+<style>
+/* BACKGROUND GRADASI BERGERAK */
+.stApp {{
+    background: linear-gradient(-45deg, #eaf8fb, #bcebef, #d9f0f3, #ffffff);
+    background-size: 400% 400%;
+    animation: gradasi 14s ease infinite;
+}}
+
+@keyframes gradasi {{
+    0%   {{ background-position: 0% 50%; }}
+    50%  {{ background-position: 100% 50%; }}
+    100% {{ background-position: 0% 50%; }}
+}}
+
+/* GELEMBUNG NAIK */
+.bubbles {{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 0;
+}}
+
+.bubbles span {{
+    position: absolute;
+    bottom: -40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    border: 2px solid rgba(139, 203, 208, 0.8);
+    animation: naik linear infinite;
+}}
+
+@keyframes naik {{
+    0%   {{ transform: translateY(0); opacity: 0; }}
+    10%  {{ opacity: 1; }}
+    100% {{ transform: translateY(-110vh); opacity: 0; }}
+}}
+
+/* KONTEN DI ATAS GELEMBUNG */
+.block-container {{
+    position: relative;
+    z-index: 1;
     max-width: 700px;
     padding-top: 2rem;
     padding-bottom: 3rem;
-}
+}}
 
-.stApp h1 {
+/* JUDUL */
+.stApp h1 {{
     color: #126477 !important;
     font-weight: 800;
-}
+}}
 
+/* TEKS UMUM */
 .stApp h2,
 .stApp h3,
 .stApp label,
 .stApp p,
 .stApp li,
-.stApp [data-testid="stWidgetLabel"] p {
+.stApp [data-testid="stWidgetLabel"] p {{
     color: #173b45 !important;
-}
+}}
 
-.layanan {
+/* KOTAK LAYANAN */
+.layanan {{
     background-color: #fff8df;
     border: 2px solid #e5c66b;
     border-radius: 16px;
@@ -59,33 +109,42 @@ st.markdown("""
     color: #263b46;
     line-height: 1.8;
     margin-bottom: 16px;
-}
+}}
 
-.stTextInput input {
+/* INPUT */
+.stTextInput input {{
     background-color: #ffffff !important;
     color: #173b45 !important;
     border: 2px solid #8bcbd0 !important;
     border-radius: 12px;
     min-height: 45px;
-}
+}}
 
-.stButton button {
+/* TOMBOL */
+.stButton button {{
     background-color: #168b91 !important;
     border-radius: 12px;
     min-height: 48px;
     font-weight: bold;
     border: none;
-}
+    transition: transform 0.15s;
+}}
+
+.stButton button:active {{
+    transform: scale(0.95);
+}}
 
 .stButton button p,
-.stButton button span {
+.stButton button span {{
     color: #ffffff !important;
-}
+}}
 
-.stButton button:hover {
+.stButton button:hover {{
     background-color: #126477 !important;
-}
+}}
 </style>
+
+<div class="bubbles">{gelembung}</div>
 """, unsafe_allow_html=True)
 
 
@@ -99,7 +158,8 @@ st.markdown("""
 ✨ <b>Layanan Kami:</b><br>
 • Terima cuci baju biar <b>wangy</b><br>
 • Cuci muka biar <b>segar</b><br>
-• Cuci otak biar <b>sadar</b>
+• Cuci otak biar <b>sadar</b><br>
+• Cuci dosa? <i>Next time kita kasi paham</i> 😹
 </div>
 """, unsafe_allow_html=True)
 
@@ -174,6 +234,7 @@ if hitung:
         st.write(f"**Potongan:** {rupiah(potongan)}")
 
         st.success(f"🧺 Total Bayar: {rupiah(total_bayar)}")
+        st.balloons()
 
 
 # FOOTER
