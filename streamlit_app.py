@@ -1,4 +1,3 @@
-
 import random
 import time
 
@@ -25,7 +24,7 @@ if "berat" not in st.session_state:
     st.session_state.berat = ""
 
 
-# GELEMBUNG BUSA ACAK
+# GELEMBUNG BUSA ACAK (BACKGROUND)
 random.seed(7)
 gelembung = "".join(
     f'<span style="left:{random.randint(2, 96)}%;'
@@ -111,68 +110,195 @@ st.markdown(f"""
     color: #263b46;
     line-height: 1.8;
     margin-bottom: 16px;
+    font-weight: 400;
 }}
 
-/* MESIN CUCI */
+.layanan .judul {{
+    font-weight: 700;
+}}
+
+/* ================= MESIN CUCI ================= */
+.area-mesin {{
+    position: relative;
+    width: 170px;
+    margin: 10px auto 0 auto;
+}}
+
+.busa-atas {{
+    position: absolute;
+    top: -22px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 20px;
+}}
+
+.busa-atas span {{
+    display: inline-block;
+    animation: melayang 2s ease-in-out infinite;
+}}
+
+.busa-atas span:nth-child(2) {{ animation-delay: 0.5s; }}
+.busa-atas span:nth-child(3) {{ animation-delay: 1s; }}
+
+@keyframes melayang {{
+    0%, 100% {{ transform: translateY(0); opacity: 0.4; }}
+    50%      {{ transform: translateY(-10px); opacity: 1; }}
+}}
+
 .mesin {{
-    width: 130px;
-    height: 130px;
-    margin: 10px auto;
-    border-radius: 26px;
-    background: #ffffff;
+    width: 170px;
+    height: 190px;
+    border-radius: 22px;
+    background: linear-gradient(#ffffff, #e3f4f6);
     border: 4px solid #126477;
     position: relative;
-    box-shadow: 0 6px 16px rgba(18, 100, 119, 0.25);
+    box-shadow: 0 8px 18px rgba(18, 100, 119, 0.3);
+    animation: getar 0.25s linear infinite;
 }}
 
-.mesin .kaca {{
-    position: absolute;
-    inset: 16px;
-    border-radius: 50%;
-    border: 4px solid #168b91;
-    background: radial-gradient(circle at 35% 35%, #e6fbff, #8bcbd0);
-    overflow: hidden;
+@keyframes getar {{
+    0%   {{ transform: translate(0, 0) rotate(0deg); }}
+    25%  {{ transform: translate(-2px, 1px) rotate(-0.8deg); }}
+    50%  {{ transform: translate(2px, -1px) rotate(0.8deg); }}
+    75%  {{ transform: translate(-1px, -1px) rotate(-0.5deg); }}
+    100% {{ transform: translate(0, 0) rotate(0deg); }}
 }}
 
-.mesin .kaca::after {{
-    content: "";
+.panel {{
     position: absolute;
-    left: 50%;
-    top: 50%;
-    width: 16px;
-    height: 16px;
-    margin: -8px 0 0 -8px;
-    border-radius: 50%;
-    background: #ffffff;
-    box-shadow: 30px 0 0 #ffffff, -30px 0 0 #ffffff;
-}}
-
-.mesin .pusaran {{
-    position: absolute;
-    inset: 6px;
-    border-radius: 50%;
-    border: 3px dashed rgba(255, 255, 255, 0.9);
-    animation: putar 1.2s linear infinite;
-}}
-
-.mesin .tombol {{
-    position: absolute;
-    top: 12px;
+    top: 10px;
+    left: 14px;
     right: 14px;
+    height: 22px;
+    border-bottom: 3px solid #bcdfe3;
+}}
+
+.panel .knob {{
+    position: absolute;
+    top: 2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #e5c66b;
+    border: 2px solid #b8962f;
+}}
+
+.panel .knob.k1 {{ left: 2px; }}
+.panel .knob.k2 {{ left: 24px; background: #8bcbd0; border-color: #168b91; }}
+
+.panel .lampu {{
+    position: absolute;
+    right: 2px;
+    top: 4px;
     width: 10px;
     height: 10px;
     border-radius: 50%;
-    background: #e5c66b;
+    background: #3ddc84;
+    animation: kedip 0.8s steps(2) infinite;
 }}
+
+@keyframes kedip {{
+    0%   {{ opacity: 1; }}
+    100% {{ opacity: 0.25; }}
+}}
+
+/* PINTU / DRUM */
+.drum {{
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    width: 120px;
+    height: 120px;
+    margin-left: -60px;
+    border-radius: 50%;
+    border: 6px solid #168b91;
+    background: #e6fbff;
+    overflow: hidden;
+    box-shadow: inset 0 0 12px rgba(18, 100, 119, 0.35);
+}}
+
+/* AIR BERGELOMBANG */
+.air {{
+    position: absolute;
+    left: -50%;
+    top: 42%;
+    width: 200%;
+    height: 200%;
+    background: rgba(22, 139, 145, 0.5);
+    border-radius: 38%;
+    animation: ombak 3.5s linear infinite;
+}}
+
+@keyframes ombak {{
+    to {{ transform: rotate(360deg); }}
+}}
+
+/* BAJU BERPUTAR */
+.baju {{
+    position: absolute;
+    inset: 0;
+    animation: putar 1.6s linear infinite;
+}}
+
+.baju span {{
+    position: absolute;
+    font-size: 26px;
+}}
+
+.baju .b1 {{ top: 6px; left: 46px; }}
+.baju .b2 {{ bottom: 12px; left: 10px; }}
+.baju .b3 {{ bottom: 12px; right: 10px; }}
 
 @keyframes putar {{
     to {{ transform: rotate(360deg); }}
 }}
 
-.sedang-cuci {{
+/* GELEMBUNG DALAM DRUM */
+.gel {{
+    position: absolute;
+    bottom: 8px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.85);
+    animation: naikdrum 1.8s ease-in infinite;
+}}
+
+.gel.g1 {{ left: 26px; width: 8px; height: 8px; }}
+.gel.g2 {{ left: 58px; width: 12px; height: 12px; animation-delay: 0.6s; }}
+.gel.g3 {{ left: 88px; width: 7px; height: 7px; animation-delay: 1.1s; }}
+
+@keyframes naikdrum {{
+    0%   {{ transform: translateY(0); opacity: 0; }}
+    20%  {{ opacity: 1; }}
+    100% {{ transform: translateY(-80px); opacity: 0; }}
+}}
+
+/* KACA PANTULAN */
+.drum::after {{
+    content: "";
+    position: absolute;
+    top: 10px;
+    left: 14px;
+    width: 30px;
+    height: 14px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.55);
+    transform: rotate(-30deg);
+}}
+
+/* STATUS TEKS */
+.stApp .sedang-cuci {{
     text-align: center;
     color: #126477 !important;
     font-weight: bold;
+    font-size: 17px;
+    margin: 12px 0 4px 0;
+}}
+
+/* PROGRESS BAR */
+.stProgress div[role="progressbar"] > div,
+.stProgress > div > div > div > div {{
+    background-color: #168b91 !important;
 }}
 
 /* KOTAK TOTAL BAYAR */
@@ -237,10 +363,10 @@ st.title("🧺 Deskap Laundry Aseli")
 # LAYANAN KAMI
 st.markdown("""
 <div class="layanan">
-✨ <b>Layanan Kami:</b><br>
-• Terima cuci baju biar <b>wangy</b><br>
-• Cuci muka biar <b>segar</b><br>
-• Cuci otak biar <b>sadar</b><br>
+<span class="judul">✨ Layanan Kami:</span><br>
+• Terima cuci baju biar wangy<br>
+• Cuci muka biar segar<br>
+• Cuci otak biar sadar<br>
 • Cuci dosa? Next time kita kasi paham 😹
 </div>
 """, unsafe_allow_html=True)
@@ -282,7 +408,33 @@ def rupiah(angka):
     return f"Rp {angka:,.0f}".replace(",", ".")
 
 
-MESIN_HTML = '<div class="mesin"><div class="kaca"><div class="pusaran"></div></div><div class="tombol"></div></div>'
+MESIN_HTML = """
+<div class="area-mesin">
+  <div class="busa-atas"><span>🫧</span><span>🫧</span><span>🫧</span></div>
+  <div class="mesin">
+    <div class="panel">
+      <div class="knob k1"></div>
+      <div class="knob k2"></div>
+      <div class="lampu"></div>
+    </div>
+    <div class="drum">
+      <div class="air"></div>
+      <div class="baju"><span class="b1">👕</span><span class="b2">🧦</span><span class="b3">👖</span></div>
+      <div class="gel g1"></div>
+      <div class="gel g2"></div>
+      <div class="gel g3"></div>
+    </div>
+  </div>
+</div>
+"""
+
+LANGKAH = [
+    "🫧 Merendam cucian...",
+    "🧼 Mengucek dengan deterjen...",
+    "💦 Membilas sampai bersih...",
+    "🌀 Memeras air...",
+    "✨ Hampir selesai...",
+]
 
 # PROSES PERHITUNGAN
 if hitung:
@@ -297,9 +449,25 @@ if hitung:
 
     else:
         # ANIMASI MESIN CUCI SAAT MENGHITUNG
-        with st.spinner("Sedang dicuci..."):
-            st.markdown(MESIN_HTML, unsafe_allow_html=True)
-            time.sleep(1.5)
+        tempat_mesin = st.empty()
+        tempat_status = st.empty()
+        tempat_bar = st.empty()
+
+        tempat_mesin.markdown(MESIN_HTML, unsafe_allow_html=True)
+        bar = tempat_bar.progress(0)
+
+        for i, langkah in enumerate(LANGKAH):
+            tempat_status.markdown(
+                f'<div class="sedang-cuci">{langkah}</div>',
+                unsafe_allow_html=True
+            )
+            time.sleep(0.7)
+            bar.progress(int((i + 1) / len(LANGKAH) * 100))
+
+        tempat_mesin.empty()
+        tempat_status.empty()
+        tempat_bar.empty()
+        st.toast("Cucian selesai! ✨")
 
         berat_kg = int(berat_v)
 
@@ -326,7 +494,6 @@ if hitung:
             f'<div class="total">🧺 Total Bayar: {rupiah(total_bayar)}</div>',
             unsafe_allow_html=True
         )
-        st.balloons()
 
 
 # FOOTER
